@@ -1,25 +1,51 @@
-import React from "react";
-import logo from "logo.svg";
+import React, { useState } from "react";
 import "App.scss";
+import "semantic-ui-css/semantic.min.css";
+import { Grid, Transition } from "semantic-ui-react";
+import FormPreview from "components/FormPreview/index";
+import ConfigurationPanel from "components/ConfigurationPanel/index";
+import styled from "styled-components";
+
+const FormPreviewColumn = styled(Grid.Column)`
+  background-color: red;
+  z-index: 2;
+`;
+
+const ConfigurationPanelColumn = styled(Grid.Column)`
+  background-color: blue;
+  z-index: 1;
+`;
 
 function App() {
+  const [configurationPanelVisible, setConfigurationPanelVisible] = useState(
+    false
+  );
+
+  const renderConfigurationPanel = () => (
+    <ConfigurationPanelColumn
+      width={8}
+      style={{ backgroundColor: "blue", zIndex: 1 }}
+    >
+      <ConfigurationPanel />
+    </ConfigurationPanelColumn>
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid padded>
+      <FormPreviewColumn
+        width={8}
+        style={{ backgroundColor: "red", zIndex: 2 }}
+      >
+        <FormPreview
+          onShowConfigPanelClick={() =>
+            setConfigurationPanelVisible((prev) => !prev)
+          }
+        />
+      </FormPreviewColumn>
+      <Transition.Group animation="fade right" duration={500}>
+        {configurationPanelVisible && renderConfigurationPanel()}
+      </Transition.Group>
+    </Grid>
   );
 }
 
