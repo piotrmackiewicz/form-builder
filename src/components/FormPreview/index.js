@@ -1,19 +1,19 @@
 import React from 'react'
-import { Button, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import FormHeader from './FormHeader/index'
+import AddElementButtons from './AddElementButtons/index'
 
-const FormPreview = ({ onShowConfigPanelClick }) => {
+const FormPreview = () => {
   return (
     <React.Fragment>
       <Grid.Row>
         <Grid.Column>
-          <p>Form preview</p>
-          <Button onClick={onShowConfigPanelClick}>Show panel</Button>
+          <FormHeader />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <FormHeader />
+          <AddElementButtons />
         </Grid.Column>
       </Grid.Row>
     </React.Fragment>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import 'App.scss'
 import 'semantic-ui-css/semantic.min.css'
 import { Grid, Transition } from 'semantic-ui-react'
@@ -16,9 +17,7 @@ const ConfigurationPanelColumn = styled(Grid.Column)`
 `
 
 function App() {
-  const [configurationPanelVisible, setConfigurationPanelVisible] = useState(
-    false
-  )
+  const configurationPanelMode = useSelector((s) => s.configurationPanelMode)
 
   const renderConfigurationPanel = () => (
     <ConfigurationPanelColumn width={8}>
@@ -29,14 +28,10 @@ function App() {
   return (
     <Grid padded>
       <FormPreviewColumn width={8}>
-        <FormPreview
-          onShowConfigPanelClick={() =>
-            setConfigurationPanelVisible((prev) => !prev)
-          }
-        />
+        <FormPreview />
       </FormPreviewColumn>
       <Transition.Group animation="fade right" duration={500}>
-        {configurationPanelVisible && renderConfigurationPanel()}
+        {configurationPanelMode && renderConfigurationPanel()}
       </Transition.Group>
     </Grid>
   )
