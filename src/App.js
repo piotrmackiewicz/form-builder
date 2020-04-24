@@ -7,7 +7,6 @@ import ConfigurationPanel from 'components/ConfigurationPanel/index'
 import styled from 'styled-components'
 
 const FormPreviewColumn = styled(Grid.Column)`
-  background-color: red;
   z-index: 2;
 `
 
@@ -22,20 +21,14 @@ function App() {
   )
 
   const renderConfigurationPanel = () => (
-    <ConfigurationPanelColumn
-      width={8}
-      style={{ backgroundColor: 'blue', zIndex: 1 }}
-    >
+    <ConfigurationPanelColumn width={8}>
       <ConfigurationPanel />
     </ConfigurationPanelColumn>
   )
 
   return (
     <Grid padded>
-      <FormPreviewColumn
-        width={8}
-        style={{ backgroundColor: 'red', zIndex: 2 }}
-      >
+      <FormPreviewColumn width={8}>
         <FormPreview
           onShowConfigPanelClick={() =>
             setConfigurationPanelVisible((prev) => !prev)
