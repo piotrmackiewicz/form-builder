@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Grid } from 'semantic-ui-react'
 import FormHeader from './FormHeader/index'
 
 const FormPreview = ({ onShowConfigPanelClick }) => {
-  const [formTitle, setFormTitle] = useState('Example form')
-
   return (
     <React.Fragment>
       <Grid.Row>
@@ -15,7 +13,7 @@ const FormPreview = ({ onShowConfigPanelClick }) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <FormHeader value={formTitle} onFormTitleChange={setFormTitle} />
+          <FormHeader />
         </Grid.Column>
       </Grid.Row>
     </React.Fragment>

@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Header, Button, Input } from 'semantic-ui-react'
+import { setFormTitle } from 'redux/actions/index'
 
-const FormHeader = ({ value, onFormTitleChange }) => {
+const FormHeader = ({ onFormTitleChange }) => {
+  const dispatch = useDispatch()
+  const formTitle = useSelector((s) => s.formTitle)
+
   const [editing, setEditing] = useState(false)
-  const [currentTitle, setCurrentTitle] = useState(value)
+  const [currentFormTitle, setCurrentFormTitle] = useState(formTitle)
 
   const formTitleInput = useRef(null)
 
@@ -14,11 +19,11 @@ const FormHeader = ({ value, onFormTitleChange }) => {
   }, [editing])
 
   const handleChangeTitle = () => {
-    onFormTitleChange(currentTitle)
+    dispatch(setFormTitle(currentFormTitle))
     setEditing(false)
   }
 
-  const handleEditTitle = (e) => setCurrentTitle(e.target.value)
+  const handleEditTitle = (e) => setCurrentFormTitle(e.target.value)
 
   const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
@@ -29,7 +34,7 @@ const FormHeader = ({ value, onFormTitleChange }) => {
   if (editing) {
     return (
       <Input
-        value={currentTitle}
+        value={currentFormTitle}
         onChange={handleEditTitle}
         onKeyUp={handleKeyUp}
         onBlur={handleChangeTitle}
@@ -41,7 +46,7 @@ const FormHeader = ({ value, onFormTitleChange }) => {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
       <Header as="h1" style={{ marginBottom: 0 }}>
-        {value}
+        {formTitle}
       </Header>
       <Button
         basic
