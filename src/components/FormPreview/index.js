@@ -2,8 +2,13 @@ import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import FormHeader from './FormHeader/index'
 import AddElementButtons from './AddElementButtons/index'
+import { useSelector } from 'react-redux'
 
 const FormPreview = () => {
+  const formElements = useSelector((s) => s.formElements)
+
+  console.log(formElements)
+
   return (
     <React.Fragment>
       <Grid.Row>
