@@ -2,6 +2,7 @@ import {
   SET_FORM_TITLE,
   SET_CONFIGURATION_PANEL_MODE,
   ADD_FORM_ELEMENT,
+  REMOVE_FORM_ELEMENT,
 } from 'redux/constants/action-types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -33,3 +34,8 @@ export const addFormElement = (element, type) => {
     element: newElement,
   }
 }
+
+export const removeFormElement = (elementId) => ({
+  type: REMOVE_FORM_ELEMENT,
+  elementId,
+})

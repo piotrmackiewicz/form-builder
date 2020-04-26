@@ -8,8 +8,6 @@ import FormElements from './FormElements/index'
 const FormPreview = () => {
   const formElements = useSelector((s) => s.formElements)
 
-  console.log(formElements)
-
   return (
     <React.Fragment>
       <Grid.Row>
