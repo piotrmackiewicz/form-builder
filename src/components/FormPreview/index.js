@@ -1,12 +1,12 @@
 import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import FormHeader from './FormHeader/index'
-import AddElementButtons from './AddElementButtons/index'
+import AddGroupButton from './AddGroupButton/index'
 import { useSelector } from 'react-redux'
-import FormElements from './FormElements/index'
+import FormGroups from './FormGroups/index'
 
 const FormPreview = () => {
-  const formElements = useSelector((s) => s.formElements)
+  const formGroups = useSelector((s) => s.formGroups)
 
   return (
     <React.Fragment>
@@ -17,12 +17,12 @@ const FormPreview = () => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <FormElements elements={formElements} />
+          <FormGroups groups={formGroups} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <AddElementButtons />
+          <AddGroupButton />
         </Grid.Column>
       </Grid.Row>
     </React.Fragment>

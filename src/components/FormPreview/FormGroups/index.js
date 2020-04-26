@@ -3,7 +3,7 @@ import { Form, Message } from 'semantic-ui-react'
 import styled from 'styled-components'
 import GroupButtons from './GroupButtons/index'
 import { useDispatch } from 'react-redux'
-import { removeFormElement } from 'redux/actions/index'
+import { removeFormGroup } from 'redux/actions/index'
 
 const InputGroupLabelField = styled(Form.Field)`
   margin-bottom: 0 !important;
@@ -15,7 +15,7 @@ const FormGroupWrapper = styled.div`
   margin-left: 0.5em;
 `
 
-const FormElements = ({ elements }) => {
+const FormGroups = ({ groups }) => {
   const dispatch = useDispatch()
 
   const renderFields = (fields) => {
@@ -36,16 +36,22 @@ const FormElements = ({ elements }) => {
   )
 
   const handleRemoveGroup = (groupId) => {
-    dispatch(removeFormElement(groupId))
+    dispatch(removeFormGroup(groupId))
   }
 
+  const handleAddField = (groupId) => {}
+
   const renderGroups = () =>
-    elements.map((e) => (
+    groups.map((e) => (
       <React.Fragment>
+        <small>{e.id}</small>
         {e.label && renderGroupLabel(e.label)}
         <FormGroupWrapper>
           <Form.Group key={e.id}>{renderFields(e.fields)}</Form.Group>
-          <GroupButtons onRemoveGroupClick={() => handleRemoveGroup(e.id)} />
+          <GroupButtons
+            onRemoveGroupClick={() => handleRemoveGroup(e.id)}
+            onAddFieldClick={() => handleAddField(e.id)}
+          />
         </FormGroupWrapper>
       </React.Fragment>
     ))
@@ -53,4 +59,4 @@ const FormElements = ({ elements }) => {
   return <Form>{renderGroups()}</Form>
 }
 
-export default FormElements
+export default FormGroups

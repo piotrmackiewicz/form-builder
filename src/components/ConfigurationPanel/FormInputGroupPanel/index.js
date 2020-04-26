@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Header, Grid, Form } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
-import { addFormElement, setConfigurationPanelMode } from 'redux/actions/index'
+import { addFormGroup, setConfigurationPanelMode } from 'redux/actions/index'
 
 const FormInputGroupPanel = () => {
   const [label, setLabel] = useState('')
@@ -10,12 +10,9 @@ const FormInputGroupPanel = () => {
   const handleChange = (e) => setLabel(e.target.value)
   const handleSubmit = () => {
     dispatch(
-      addFormElement(
-        {
-          label,
-        },
-        'inputGroup'
-      )
+      addFormGroup({
+        label,
+      })
     )
     dispatch(setConfigurationPanelMode(null))
   }

@@ -2,8 +2,8 @@ import initialState from 'redux/store/initialState'
 import {
   SET_FORM_TITLE,
   SET_CONFIGURATION_PANEL_MODE,
-  ADD_FORM_ELEMENT,
-  REMOVE_FORM_ELEMENT,
+  ADD_FORM_GROUP,
+  REMOVE_FORM_GROUP,
 } from 'redux/constants/action-types'
 
 function rootReducer(state = initialState, action) {
@@ -12,17 +12,15 @@ function rootReducer(state = initialState, action) {
       return { ...state, formTitle: action.title }
     case SET_CONFIGURATION_PANEL_MODE:
       return { ...state, configurationPanelMode: action.mode }
-    case ADD_FORM_ELEMENT:
+    case ADD_FORM_GROUP:
       return {
         ...state,
-        formElements: [...state.formElements, action.element],
+        formGroups: [...state.formGroups, action.group],
       }
-    case REMOVE_FORM_ELEMENT:
+    case REMOVE_FORM_GROUP:
       return {
         ...state,
-        formElements: state.formElements.filter(
-          (fe) => fe.id !== action.elementId
-        ),
+        formGroups: state.formGroups.filter((fe) => fe.id !== action.groupId),
       }
     default:
       return state
