@@ -84,6 +84,10 @@ const FormInputPanel = () => {
     )
   }
 
+  const handleOptionDelete = (optionId) => {
+    setOptions((prevOptions) => prevOptions.filter((po) => po.id !== optionId))
+  }
+
   const renderSelectOptionsList = () => {
     if (!options || options.length === 0) {
       return (
@@ -92,7 +96,7 @@ const FormInputPanel = () => {
         </Message>
       )
     }
-    return <OptionsList options={options} />
+    return <OptionsList options={options} onDelete={handleOptionDelete} />
   }
 
   const renderSelectOptions = () => {

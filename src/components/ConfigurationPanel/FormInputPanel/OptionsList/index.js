@@ -1,5 +1,5 @@
 import React from 'react'
-import { List } from 'semantic-ui-react'
+import { List, Button } from 'semantic-ui-react'
 import styled from 'styled-components'
 
 const OptionElement = styled.span`
@@ -15,10 +15,15 @@ const MarginedList = styled(List)`
   margin-bottom: 1em !important;
 `
 
-const OptionsList = ({ options }) => (
+const OptionsList = ({ options, onDelete }) => (
   <MarginedList>
     {options.map((o) => (
       <List.Item key={o.id}>
+        <List.Content floated="right">
+          <Button color="red" size="tiny" onClick={() => onDelete(o.id)}>
+            Delete
+          </Button>
+        </List.Content>
         <List.Content>
           <OptionElement>
             <OptionElementLabel>key: </OptionElementLabel>
