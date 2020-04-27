@@ -3,6 +3,8 @@ import {
   SET_CONFIGURATION_PANEL_MODE,
   ADD_FORM_GROUP,
   REMOVE_FORM_GROUP,
+  SET_CONFIGURATION_PANEL_GROUP_ID,
+  ADD_INPUT_FIELD,
 } from 'redux/constants/action-types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -14,6 +16,11 @@ export const setFormTitle = (title) => ({
 export const setConfigurationPanelMode = (mode) => ({
   type: SET_CONFIGURATION_PANEL_MODE,
   mode,
+})
+
+export const setConfigurationPanelGroupId = (groupId) => ({
+  type: SET_CONFIGURATION_PANEL_GROUP_ID,
+  groupId,
 })
 
 export const addFormGroup = (group) => {
@@ -30,4 +37,10 @@ export const addFormGroup = (group) => {
 export const removeFormGroup = (groupId) => ({
   type: REMOVE_FORM_GROUP,
   groupId,
+})
+
+export const addInputField = (groupId, input) => ({
+  type: ADD_INPUT_FIELD,
+  groupId,
+  input,
 })

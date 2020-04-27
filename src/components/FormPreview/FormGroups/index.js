@@ -3,7 +3,12 @@ import { Form, Message } from 'semantic-ui-react'
 import styled from 'styled-components'
 import GroupButtons from './GroupButtons/index'
 import { useDispatch } from 'react-redux'
-import { removeFormGroup } from 'redux/actions/index'
+import {
+  removeFormGroup,
+  setConfigurationPanelMode,
+  setConfigurationPanelGroupId,
+} from 'redux/actions/index'
+import { FORM_INPUT } from 'redux/constants/configuration-panel-modes'
 
 const InputGroupLabelField = styled(Form.Field)`
   margin-bottom: 0 !important;
@@ -40,16 +45,17 @@ const FormGroups = ({ groups }) => {
   }
 
   const handleAddField = (groupId) => {
-    console.log(`adding field to group ${groupId}`)
+    dispatch(setConfigurationPanelMode(FORM_INPUT))
+    dispatch(setConfigurationPanelGroupId(groupId))
   }
 
   const renderGroups = () =>
     groups.map((e) => (
-      <React.Fragment>
+      <React.Fragment key={e.id}>
         <small>{e.id}</small>
         {e.label && renderGroupLabel(e.label)}
         <FormGroupWrapper>
-          <Form.Group key={e.id}>{renderFields(e.fields)}</Form.Group>
+          <Form.Group>{renderFields(e.fields)}</Form.Group>
           <GroupButtons
             onRemoveGroupClick={() => handleRemoveGroup(e.id)}
             onAddFieldClick={() => handleAddField(e.id)}

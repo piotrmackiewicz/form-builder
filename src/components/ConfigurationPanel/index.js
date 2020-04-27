@@ -1,11 +1,17 @@
 import React from 'react'
 import FormInputGroupPanel from './FormInputGroupPanel/index'
-import { FORM_INPUT_GROUP } from 'redux/constants/configuration-panel-modes'
+import FormInputPanel from './FormInputPanel/index'
+import {
+  FORM_INPUT_GROUP,
+  FORM_INPUT,
+} from 'redux/constants/configuration-panel-modes'
 
-const ConfigurationPanel = ({ mode, onFormSubmit }) => {
+const ConfigurationPanel = ({ mode }) => {
   switch (mode) {
     case FORM_INPUT_GROUP:
-      return <FormInputGroupPanel onSubmit={onFormSubmit} />
+      return <FormInputGroupPanel />
+    case FORM_INPUT:
+      return <FormInputPanel />
     default:
       return null
   }
