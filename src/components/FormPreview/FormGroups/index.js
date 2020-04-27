@@ -39,7 +39,9 @@ const FormGroups = ({ groups }) => {
     dispatch(removeFormGroup(groupId))
   }
 
-  const handleAddField = (groupId) => {}
+  const handleAddField = (groupId) => {
+    console.log(`adding field to group ${groupId}`)
+  }
 
   const renderGroups = () =>
     groups.map((e) => (

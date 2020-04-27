@@ -7,9 +7,9 @@ const ButtonsWrapper = styled.div`
   margin-left: 1em;
 `
 
-const GroupButtons = ({ onRemoveGroupClick }) => (
+const GroupButtons = ({ onRemoveGroupClick, onAddFieldClick }) => (
   <ButtonsWrapper>
-    <Button size="small" primary>
+    <Button size="small" primary onClick={onAddFieldClick}>
       <Icon name="add" /> Add field
     </Button>
     <Button size="small" color="red" onClick={onRemoveGroupClick}>
