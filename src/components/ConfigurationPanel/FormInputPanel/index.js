@@ -27,11 +27,13 @@ const FormInputPanel = () => {
   const [placeholder, setPlaceholder] = useState('')
   const [options, setOptions] = useState([])
   const [addOptionModalVisible, setAddOptionModalVisible] = useState(false)
+  const [noOptionsError, setNoOptionsError] = useState(false)
 
   const setDefaults = () => {
     setPlaceholder('')
     setOptions([])
     setSelectedInputType('singleLineText')
+    setNoOptionsError(false)
     dispatch(setConfigurationPanelGroupId(null))
     dispatch(setConfigurationPanelMode(null))
   }
@@ -45,6 +47,10 @@ const FormInputPanel = () => {
       placeholder,
     }
     if (selectedInputType === 'select') {
+      if (options.length === 0) {
+        setNoOptionsError(true)
+        return
+      }
       input.options = options
     }
     dispatch(addInputField(groupId, input))
@@ -54,12 +60,12 @@ const FormInputPanel = () => {
   const inputTypeOptions = [
     {
       key: 'slt',
-      text: 'Single line text',
+      text: 'Single Line Text',
       value: 'singleLineText',
     },
     {
       key: 'mlt',
-      text: 'Multi line text',
+      text: 'Multi Line Text',
       value: 'multiLineText',
     },
     {
@@ -68,6 +74,15 @@ const FormInputPanel = () => {
       value: 'select',
     },
   ]
+
+  const renderNoOptionsError = () => {
+    console.log('error')
+    return (
+      <Message negative size="small">
+        You need to add at least one option
+      </Message>
+    )
+  }
 
   const renderSelectOptionsList = () => {
     if (!options || options.length === 0) {
@@ -85,6 +100,7 @@ const FormInputPanel = () => {
       <div style={{ marginBottom: '1em' }}>
         <p>Options:</p>
         <div style={{ display: 'block' }}>{renderSelectOptionsList()}</div>
+        {noOptionsError && renderNoOptionsError()}
         <Button
           size="small"
           primary
@@ -124,6 +140,7 @@ const FormInputPanel = () => {
   const handleSubmitAddOption = (formValues) => {
     setOptions((prevOptions) => [...prevOptions, formValues])
     setAddOptionModalVisible(false)
+    setNoOptionsError(false)
   }
 
   return (
