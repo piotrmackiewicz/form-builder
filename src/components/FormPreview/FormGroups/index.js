@@ -17,7 +17,6 @@ const InputGroupLabelField = styled(Form.Field)`
 const FormGroupWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 0.5em;
 `
 
 const FormGroups = ({ groups }) => {
@@ -31,7 +30,24 @@ const FormGroups = ({ groups }) => {
         </Message>
       )
     }
-    return null
+    return fields.map((f) => {
+      switch (f.type) {
+        case 'singleLineText':
+          return <Form.Input placeholder={f.placeholder} />
+        case 'multiLineText':
+          return <Form.TextArea placeholder={f.placeholder} />
+        case 'select':
+          return (
+            <Form.Select
+              fluid
+              options={f.options}
+              placeholder={f.placeholder}
+            />
+          )
+        default:
+          return null
+      }
+    })
   }
 
   const renderGroupLabel = (value) => (
@@ -52,7 +68,6 @@ const FormGroups = ({ groups }) => {
   const renderGroups = () =>
     groups.map((e) => (
       <React.Fragment key={e.id}>
-        <small>{e.id}</small>
         {e.label && renderGroupLabel(e.label)}
         <FormGroupWrapper>
           <Form.Group>{renderFields(e.fields)}</Form.Group>
