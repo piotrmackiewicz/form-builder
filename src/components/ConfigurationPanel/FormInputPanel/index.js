@@ -1,17 +1,7 @@
 import React, { useState } from 'react'
-import {
-  Header,
-  Grid,
-  Form,
-  Button,
-  Message,
-  Modal,
-  Input,
-  List,
-} from 'semantic-ui-react'
+import { Header, Grid, Form, Button, Message } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  addFormGroup,
   setConfigurationPanelMode,
   addInputField,
   setConfigurationPanelGroupId,
@@ -76,7 +66,6 @@ const FormInputPanel = () => {
   ]
 
   const renderNoOptionsError = () => {
-    console.log('error')
     return (
       <Message negative size="small">
         You need to add at least one option
