@@ -7,6 +7,7 @@ import {
   REMOVE_FORM_GROUP,
   ADD_INPUT_FIELD,
   CHANGE_GROUP_ORDER,
+  REMOVE_INPUT_FIELD,
 } from 'redux/constants/action-types'
 
 function rootReducer(state = initialState, action) {
@@ -54,6 +55,20 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         formGroups: groupsCopy,
+      }
+    case REMOVE_INPUT_FIELD:
+      return {
+        ...state,
+        formGroups: state.formGroups.map((fg) => {
+          if (fg.id === action.groupId) {
+            return {
+              ...fg,
+              fields: fg.fields.filter((f) => f.id !== action.inputId),
+            }
+          } else {
+            return fg
+          }
+        }),
       }
     default:
       return state

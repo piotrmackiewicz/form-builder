@@ -8,8 +8,10 @@ import {
   setConfigurationPanelMode,
   setConfigurationPanelGroupId,
   changeGroupOrder,
+  removeInputField,
 } from 'redux/actions/index'
 import { FORM_INPUT } from 'redux/constants/configuration-panel-modes'
+import DeleteFieldButton from './DeleteFieldButton'
 
 const InputGroupLabelField = styled(Form.Field)`
   margin-bottom: 0 !important;
@@ -24,10 +26,19 @@ const NoInputGroupsMessage = styled(Message)`
   margin-left: 0.5em !important;
 `
 
+const FieldWrapper = styled.div`
+  position: relative;
+  padding: 0 0.5em;
+`
+
 const FormGroups = ({ groups }) => {
   const dispatch = useDispatch()
 
-  const renderFields = (fields) => {
+  const handleFieldRemove = (groupId, fieldId) => {
+    dispatch(removeInputField(groupId, fieldId))
+  }
+
+  const renderFields = (fields, groupId) => {
     if (fields.length === 0) {
       return (
         <NoInputGroupsMessage compact info size="mini">
@@ -38,16 +49,41 @@ const FormGroups = ({ groups }) => {
     return fields.map((f) => {
       switch (f.type) {
         case 'singleLineText':
-          return <Form.Input placeholder={f.placeholder} />
+          return (
+            <FieldWrapper key={f.id}>
+              <DeleteFieldButton
+                onClick={() => handleFieldRemove(groupId, f.id)}
+              >
+                ✖
+              </DeleteFieldButton>
+              <Form.Input placeholder={f.placeholder} />
+            </FieldWrapper>
+          )
         case 'multiLineText':
-          return <Form.TextArea placeholder={f.placeholder} />
+          return (
+            <FieldWrapper key={f.id}>
+              <DeleteFieldButton
+                onClick={() => handleFieldRemove(groupId, f.id)}
+              >
+                ✖
+              </DeleteFieldButton>
+              <Form.TextArea placeholder={f.placeholder} />
+            </FieldWrapper>
+          )
         case 'select':
           return (
-            <Form.Select
-              fluid
-              options={f.options}
-              placeholder={f.placeholder}
-            />
+            <FieldWrapper key={f.id}>
+              <DeleteFieldButton
+                onClick={() => handleFieldRemove(groupId, f.id)}
+              >
+                ✖
+              </DeleteFieldButton>
+              <Form.Select
+                fluid
+                options={f.options}
+                placeholder={f.placeholder}
+              />
+            </FieldWrapper>
           )
         default:
           return null
@@ -81,7 +117,7 @@ const FormGroups = ({ groups }) => {
       <React.Fragment key={e.id}>
         {e.label && renderGroupLabel(e.label)}
         <FormGroupWrapper>
-          <Form.Group>{renderFields(e.fields)}</Form.Group>
+          <Form.Group>{renderFields(e.fields, e.id)}</Form.Group>
           <GroupButtons
             onRemoveGroupClick={() => handleRemoveGroup(e.id)}
             onAddFieldClick={() => handleAddField(e.id)}
