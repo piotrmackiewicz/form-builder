@@ -5,6 +5,7 @@ import {
   REMOVE_FORM_GROUP,
   SET_CONFIGURATION_PANEL_GROUP_ID,
   ADD_INPUT_FIELD,
+  CHANGE_GROUP_ORDER,
 } from 'redux/constants/action-types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -43,4 +44,10 @@ export const addInputField = (groupId, input) => ({
   type: ADD_INPUT_FIELD,
   groupId,
   input,
+})
+
+export const changeGroupOrder = (idx, direction) => ({
+  type: CHANGE_GROUP_ORDER,
+  idx,
+  direction,
 })

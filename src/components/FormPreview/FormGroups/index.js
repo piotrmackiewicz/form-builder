@@ -7,6 +7,7 @@ import {
   removeFormGroup,
   setConfigurationPanelMode,
   setConfigurationPanelGroupId,
+  changeGroupOrder,
 } from 'redux/actions/index'
 import { FORM_INPUT } from 'redux/constants/configuration-panel-modes'
 
@@ -19,15 +20,19 @@ const FormGroupWrapper = styled.div`
   align-items: center;
 `
 
+const NoInputGroupsMessage = styled(Message)`
+  margin-left: 0.5em !important;
+`
+
 const FormGroups = ({ groups }) => {
   const dispatch = useDispatch()
 
   const renderFields = (fields) => {
     if (fields.length === 0) {
       return (
-        <Message compact info size="mini">
+        <NoInputGroupsMessage compact info size="mini">
           No input fields
-        </Message>
+        </NoInputGroupsMessage>
       )
     }
     return fields.map((f) => {
@@ -65,8 +70,14 @@ const FormGroups = ({ groups }) => {
     dispatch(setConfigurationPanelGroupId(groupId))
   }
 
+  const handleChangeGroupOrder = (idx, direction) => {
+    if (idx === 0 && direction === 'up') return
+    if (idx === groups.length - 1 && direction === 'down') return
+    dispatch(changeGroupOrder(idx, direction))
+  }
+
   const renderGroups = () =>
-    groups.map((e) => (
+    groups.map((e, idx) => (
       <React.Fragment key={e.id}>
         {e.label && renderGroupLabel(e.label)}
         <FormGroupWrapper>
@@ -74,6 +85,8 @@ const FormGroups = ({ groups }) => {
           <GroupButtons
             onRemoveGroupClick={() => handleRemoveGroup(e.id)}
             onAddFieldClick={() => handleAddField(e.id)}
+            onMoveUpClick={() => handleChangeGroupOrder(idx, 'up')}
+            onMoveDownClick={() => handleChangeGroupOrder(idx, 'down')}
           />
         </FormGroupWrapper>
       </React.Fragment>

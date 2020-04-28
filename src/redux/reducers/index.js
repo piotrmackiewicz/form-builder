@@ -6,6 +6,7 @@ import {
   ADD_FORM_GROUP,
   REMOVE_FORM_GROUP,
   ADD_INPUT_FIELD,
+  CHANGE_GROUP_ORDER,
 } from 'redux/constants/action-types'
 
 function rootReducer(state = initialState, action) {
@@ -39,6 +40,20 @@ function rootReducer(state = initialState, action) {
             return fg
           }
         }),
+      }
+    case CHANGE_GROUP_ORDER:
+      const groupsCopy = [...state.formGroups]
+      const targetGroup = groupsCopy.splice(action.idx, 1)
+      if (action.direction === 'up') {
+        groupsCopy.splice(action.idx - 1, 0, targetGroup[0])
+      } else if (action.direction === 'down') {
+        groupsCopy.splice(action.idx + 1, 0, targetGroup[0])
+      } else {
+        groupsCopy.splice(action.idx, 0, targetGroup[0])
+      }
+      return {
+        ...state,
+        formGroups: groupsCopy,
       }
     default:
       return state
