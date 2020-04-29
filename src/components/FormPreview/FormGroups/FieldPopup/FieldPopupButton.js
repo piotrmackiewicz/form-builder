@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 import { Button } from 'semantic-ui-react'
 
-const DeleteFieldButton = styled(Button)`
-  position: absolute;
-  top: -5px;
-  right: 0;
-  background-color: red !important;
+const FieldPopupButton = styled(Button)`
+  ${(props) => {
+    if (props.color) {
+      return `background-color: ${props.color} !important;`
+    }
+  }}
   display: flex !important;
-  width: 13px;
-  height: 13px;
+  width: 20px;
+  height: 20px;
   justify-content: center;
   align-items: center;
   color: white !important;
@@ -17,4 +18,4 @@ const DeleteFieldButton = styled(Button)`
   z-index: 1;
 `
 
-export default DeleteFieldButton
+export default FieldPopupButton

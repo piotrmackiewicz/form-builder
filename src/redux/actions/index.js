@@ -7,6 +7,7 @@ import {
   ADD_INPUT_FIELD,
   CHANGE_GROUP_ORDER,
   REMOVE_INPUT_FIELD,
+  CHANGE_FIELD_ORDER,
 } from 'redux/constants/action-types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -57,4 +58,11 @@ export const removeInputField = (groupId, inputId) => ({
   type: REMOVE_INPUT_FIELD,
   groupId,
   inputId,
+})
+
+export const changeFieldOrder = (idx, direction, groupId) => ({
+  type: CHANGE_FIELD_ORDER,
+  idx,
+  direction,
+  groupId,
 })

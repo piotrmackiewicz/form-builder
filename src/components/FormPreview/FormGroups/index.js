@@ -9,9 +9,11 @@ import {
   setConfigurationPanelGroupId,
   changeGroupOrder,
   removeInputField,
+  changeFieldOrder,
 } from 'redux/actions/index'
 import { FORM_INPUT } from 'redux/constants/configuration-panel-modes'
-import DeleteFieldButton from './DeleteFieldButton'
+import FieldPopup from './FieldPopup/index'
+import FieldPreview from './FieldPreview/index'
 
 const InputGroupLabelField = styled(Form.Field)`
   margin-bottom: 0 !important;
@@ -38,6 +40,12 @@ const FormGroups = ({ groups }) => {
     dispatch(removeInputField(groupId, fieldId))
   }
 
+  const handleChangeFieldOrder = (idx, direction, groupId, fields) => {
+    if (idx === 0 && direction === 'left') return
+    if (idx === fields.length - 1 && direction === 'right') return
+    dispatch(changeFieldOrder(idx, direction, groupId))
+  }
+
   const renderFields = (fields, groupId) => {
     if (fields.length === 0) {
       return (
@@ -46,49 +54,15 @@ const FormGroups = ({ groups }) => {
         </NoInputGroupsMessage>
       )
     }
-    return fields.map((f) => {
-      switch (f.type) {
-        case 'singleLineText':
-          return (
-            <FieldWrapper key={f.id}>
-              <DeleteFieldButton
-                onClick={() => handleFieldRemove(groupId, f.id)}
-              >
-                ✖
-              </DeleteFieldButton>
-              <Form.Input placeholder={f.placeholder} />
-            </FieldWrapper>
-          )
-        case 'multiLineText':
-          return (
-            <FieldWrapper key={f.id}>
-              <DeleteFieldButton
-                onClick={() => handleFieldRemove(groupId, f.id)}
-              >
-                ✖
-              </DeleteFieldButton>
-              <Form.TextArea placeholder={f.placeholder} />
-            </FieldWrapper>
-          )
-        case 'select':
-          return (
-            <FieldWrapper key={f.id}>
-              <DeleteFieldButton
-                onClick={() => handleFieldRemove(groupId, f.id)}
-              >
-                ✖
-              </DeleteFieldButton>
-              <Form.Select
-                fluid
-                options={f.options}
-                placeholder={f.placeholder}
-              />
-            </FieldWrapper>
-          )
-        default:
-          return null
-      }
-    })
+    return fields.map((f, idx) => (
+      <FieldPreview
+        field={f}
+        onRemoveField={() => handleFieldRemove(groupId, f.id)}
+        onChangeFieldOrder={(direction) =>
+          handleChangeFieldOrder(idx, direction, groupId, fields)
+        }
+      />
+    ))
   }
 
   const renderGroupLabel = (value) => (

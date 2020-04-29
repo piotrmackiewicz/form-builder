@@ -8,6 +8,7 @@ import {
   ADD_INPUT_FIELD,
   CHANGE_GROUP_ORDER,
   REMOVE_INPUT_FIELD,
+  CHANGE_FIELD_ORDER,
 } from 'redux/constants/action-types'
 
 function rootReducer(state = initialState, action) {
@@ -64,6 +65,31 @@ function rootReducer(state = initialState, action) {
             return {
               ...fg,
               fields: fg.fields.filter((f) => f.id !== action.inputId),
+            }
+          } else {
+            return fg
+          }
+        }),
+      }
+    case CHANGE_FIELD_ORDER:
+      const fieldsCopy = [
+        ...state.formGroups.find((fg) => fg.id === action.groupId).fields,
+      ]
+      const targetField = fieldsCopy.splice(action.idx, 1)
+      if (action.direction === 'left') {
+        fieldsCopy.splice(action.idx - 1, 0, targetField[0])
+      } else if (action.direction === 'right') {
+        fieldsCopy.splice(action.idx + 1, 0, targetField[0])
+      } else {
+        fieldsCopy.splice(action.idx, 0, targetField[0])
+      }
+      return {
+        ...state,
+        formGroups: state.formGroups.map((fg) => {
+          if (fg.id === action.groupId) {
+            return {
+              ...fg,
+              fields: fieldsCopy,
             }
           } else {
             return fg
