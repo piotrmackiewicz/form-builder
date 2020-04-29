@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import FormHeader from './FormHeader/index'
-import AddGroupButton from './AddGroupButton/index'
+import AddGroupButton from './AddGroupButton'
 import { useSelector } from 'react-redux'
 import FormGroups from './FormGroups/index'
 
