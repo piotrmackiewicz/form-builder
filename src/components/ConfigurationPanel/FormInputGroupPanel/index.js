@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-import { Header, Grid, Form, Button } from 'semantic-ui-react'
+import { Header, Grid, Form } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { addFormGroup, setConfigurationPanelMode } from 'redux/actions/index'
-import styled from 'styled-components'
-
-const ButtonsWrapper = styled.div`
-  display: flex;
-`
+import FormButtons from './FormButtons/index'
+import LabelInput from './LabelInput'
 
 const FormInputGroupPanel = () => {
   const [label, setLabel] = useState('')
@@ -38,20 +35,8 @@ const FormInputGroupPanel = () => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input
-              placeholder="Label"
-              name="label"
-              value={label}
-              onChange={handleChange}
-            ></Form.Input>
-            <ButtonsWrapper>
-              <Button primary onClick={handleSubmit}>
-                Create
-              </Button>
-              <Button color="red" onClick={handleCancel}>
-                Cancel
-              </Button>
-            </ButtonsWrapper>
+            <LabelInput value={label} onChange={handleChange} />
+            <FormButtons onSubmit={handleSubmit} onCancel={handleCancel} />
           </Form>
         </Grid.Column>
       </Grid.Row>

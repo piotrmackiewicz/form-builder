@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Header, Button, Input } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 import { setFormTitle } from 'redux/actions/index'
+import Wrapper from './Wrapper'
+import TextDisplay from './TextDisplay'
+import EditButton from './EditButton'
 
-const FormHeader = ({ onFormTitleChange }) => {
+const FormHeader = () => {
   const dispatch = useDispatch()
   const formTitle = useSelector((s) => s.formTitle)
 
@@ -44,20 +47,17 @@ const FormHeader = ({ onFormTitleChange }) => {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-      <Header as="h1" style={{ marginBottom: 0 }}>
-        {formTitle}
-      </Header>
-      <Button
+    <Wrapper>
+      <TextDisplay value={formTitle} />
+      <EditButton
         basic
         compact
         color="yellow"
         size="tiny"
         icon="edit"
-        style={{ marginLeft: '15px' }}
         onClick={() => setEditing(true)}
       />
-    </div>
+    </Wrapper>
   )
 }
 

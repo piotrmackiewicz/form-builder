@@ -11,12 +11,12 @@ const CloseButton = styled(Button)`
 `
 
 const CloseIcon = styled(Icon)`
-  margin-right: 0;
+  margin-right: 0 !important;
 `
 
 const CloseConfigurationPanelButton = ({ onClick }) => (
   <CloseButton basic size="tiny" onClick={onClick}>
-    <CloseIcon name="delete" style={{ marginRight: 0 }} />
+    <CloseIcon name="delete" />
   </CloseButton>
 )
 

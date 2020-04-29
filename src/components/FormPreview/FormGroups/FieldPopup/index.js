@@ -1,17 +1,8 @@
 import React, { useState } from 'react'
-import { Popup, Icon } from 'semantic-ui-react'
-import FieldPopupButton from './FieldPopupButton'
-import styled from 'styled-components'
-
-const PopupButtonsWrapper = styled.div`
-  display: flex;
-`
-
-const PopupButtonIcon = styled(Icon)`
-  color: white !important;
-  margin-right: 0 !important;
-  margin-left: 0 !important;
-`
+import { Popup } from 'semantic-ui-react'
+import PopupButton from './PopupButton'
+import ButtonsWrapper from './ButtonsWrapper'
+import ButtonIcon from './ButtonIcon'
 
 const FieldPopup = ({
   triggerComponent,
@@ -32,38 +23,38 @@ const FieldPopup = ({
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
     >
-      <PopupButtonsWrapper>
-        <FieldPopupButton
+      <ButtonsWrapper>
+        <PopupButton
           primary
           onClick={() => {
             setOpen(false)
             onLeftClick()
           }}
         >
-          <PopupButtonIcon name="arrow left" />
-        </FieldPopupButton>
-        <FieldPopupButton
+          <ButtonIcon name="arrow left" />
+        </PopupButton>
+        <PopupButton
           primary
           onClick={() => {
             setOpen(false)
             onRightClick()
           }}
         >
-          <PopupButtonIcon name="arrow right" />
-        </FieldPopupButton>
-        <FieldPopupButton color="orange" onClick={onEditClick}>
-          <PopupButtonIcon name="edit" />
-        </FieldPopupButton>
-        <FieldPopupButton
+          <ButtonIcon name="arrow right" />
+        </PopupButton>
+        <PopupButton color="orange" onClick={onEditClick}>
+          <ButtonIcon name="edit" />
+        </PopupButton>
+        <PopupButton
           color="red"
           onClick={() => {
             setOpen(false)
             onRemoveClick()
           }}
         >
-          <PopupButtonIcon name="delete" />
-        </FieldPopupButton>
-      </PopupButtonsWrapper>
+          <ButtonIcon name="delete" />
+        </PopupButton>
+      </ButtonsWrapper>
     </Popup>
   )
 }

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Form, Message } from 'semantic-ui-react'
-import styled from 'styled-components'
+import { Form } from 'semantic-ui-react'
 import GroupButtons from './GroupButtons/index'
 import { useDispatch } from 'react-redux'
 import {
@@ -17,37 +16,44 @@ import {
   EDIT_FORM_INPUT,
 } from 'redux/constants/configuration-panel-modes'
 import FieldPreview from './FieldPreview/index'
-
-const InputGroupLabelField = styled(Form.Field)`
-  margin-bottom: 0 !important;
-`
-
-const FormGroupWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const NoInputGroupsMessage = styled(Message)`
-  margin-left: 0.5em !important;
-`
+import InputGroupLabelField from './InputGroupLabelField'
+import FormGroupWrapper from './FormGroupWrapper'
+import NoInputGroupsMessage from './NoInputGroupsMessage'
 
 const FormGroups = ({ groups }) => {
   const dispatch = useDispatch()
+
+  const isElementExtreme = (idx, direction, arrLength) =>
+    (direction === 'left' && idx === 0) ||
+    (direction === 'right' && idx === arrLength - 1)
 
   const handleFieldRemove = (groupId, fieldId) => {
     dispatch(removeInputField(groupId, fieldId))
   }
 
   const handleChangeFieldOrder = (idx, direction, groupId, fields) => {
-    if (idx === 0 && direction === 'left') return
-    if (idx === fields.length - 1 && direction === 'right') return
+    if (isElementExtreme(idx, direction, fields.length)) return
     dispatch(changeFieldOrder(idx, direction, groupId))
+  }
+
+  const handleChangeGroupOrder = (idx, direction) => {
+    if (isElementExtreme(idx, direction, groups.length)) return
+    dispatch(changeGroupOrder(idx, direction))
   }
 
   const handleEditField = (fieldId, groupId) => {
     dispatch(setEditedFieldId(fieldId))
     dispatch(setConfigurationPanelGroupId(groupId))
     dispatch(setConfigurationPanelMode(EDIT_FORM_INPUT))
+  }
+
+  const handleRemoveGroup = (groupId) => {
+    dispatch(removeFormGroup(groupId))
+  }
+
+  const handleAddField = (groupId) => {
+    dispatch(setConfigurationPanelMode(FORM_INPUT))
+    dispatch(setConfigurationPanelGroupId(groupId))
   }
 
   const renderFields = (fields, groupId) => {
@@ -76,21 +82,6 @@ const FormGroups = ({ groups }) => {
       <label>{value}</label>
     </InputGroupLabelField>
   )
-
-  const handleRemoveGroup = (groupId) => {
-    dispatch(removeFormGroup(groupId))
-  }
-
-  const handleAddField = (groupId) => {
-    dispatch(setConfigurationPanelMode(FORM_INPUT))
-    dispatch(setConfigurationPanelGroupId(groupId))
-  }
-
-  const handleChangeGroupOrder = (idx, direction) => {
-    if (idx === 0 && direction === 'up') return
-    if (idx === groups.length - 1 && direction === 'down') return
-    dispatch(changeGroupOrder(idx, direction))
-  }
 
   const renderGroups = () =>
     groups.map((e, idx) => (

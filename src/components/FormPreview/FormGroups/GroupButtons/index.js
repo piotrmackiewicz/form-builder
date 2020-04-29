@@ -1,15 +1,7 @@
 import React from 'react'
 import { Button, Icon } from 'semantic-ui-react'
-import styled from 'styled-components'
-
-const ButtonsWrapper = styled.div`
-  margin-bottom: 1em;
-  margin-left: 1em;
-`
-
-const ArrowIcon = styled(Icon)`
-  margin-right: 0;
-`
+import Wrapper from './Wrapper'
+import ArrowIcon from './ArrowIcon'
 
 const GroupButtons = ({
   onRemoveGroupClick,
@@ -17,7 +9,7 @@ const GroupButtons = ({
   onMoveUpClick,
   onMoveDownClick,
 }) => (
-  <ButtonsWrapper>
+  <Wrapper>
     <Button size="small" primary onClick={onAddFieldClick}>
       <Icon name="add" /> Add field
     </Button>
@@ -25,12 +17,12 @@ const GroupButtons = ({
       <Icon name="remove" /> Remove group
     </Button>
     <Button size="small" primary onClick={onMoveUpClick}>
-      <ArrowIcon name="arrow up" style={{ marginRight: 0 }} />
+      <ArrowIcon name="arrow up" />
     </Button>
     <Button size="small" primary onClick={onMoveDownClick}>
-      <ArrowIcon name="arrow down" style={{ marginRight: 0 }} />
+      <ArrowIcon name="arrow down" />
     </Button>
-  </ButtonsWrapper>
+  </Wrapper>
 )
 
 export default GroupButtons

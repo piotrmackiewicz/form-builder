@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Button } from 'semantic-ui-react'
 
-const FieldPopupButton = styled(Button)`
+const PopupButton = styled(Button)`
   ${(props) => {
     if (props.color) {
       return `background-color: ${props.color} !important;`
@@ -18,4 +18,4 @@ const FieldPopupButton = styled(Button)`
   z-index: 1;
 `
 
-export default FieldPopupButton
+export default PopupButton

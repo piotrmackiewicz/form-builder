@@ -1,12 +1,7 @@
 import React from 'react'
 import FieldPopup from '../FieldPopup/index'
-import styled from 'styled-components'
 import { Form } from 'semantic-ui-react'
-
-const FieldWrapper = styled.div`
-  position: relative;
-  padding: 0 0.5em;
-`
+import FieldWrapper from './FieldWrapper'
 
 const FieldPreview = ({
   field,

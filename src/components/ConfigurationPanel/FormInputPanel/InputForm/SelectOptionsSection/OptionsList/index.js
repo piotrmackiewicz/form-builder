@@ -1,22 +1,11 @@
 import React from 'react'
 import { List, Button } from 'semantic-ui-react'
-import styled from 'styled-components'
-
-const OptionElement = styled.span`
-  margin-right: 0.5em;
-`
-
-const OptionElementLabel = styled.span`
-  font-weight: bold;
-  text-transform: uppercase;
-`
-
-const MarginedList = styled(List)`
-  margin-bottom: 1em !important;
-`
+import Wrapper from './Wrapper'
+import OptionElement from './OptionElement'
+import OptionElementLabel from './OptionElementLabel'
 
 const OptionsList = ({ options, onDelete }) => (
-  <MarginedList>
+  <Wrapper>
     {options.map((o) => (
       <List.Item key={o.id}>
         <List.Content floated="right">
@@ -40,7 +29,7 @@ const OptionsList = ({ options, onDelete }) => (
         </List.Content>
       </List.Item>
     ))}
-  </MarginedList>
+  </Wrapper>
 )
 
 export default OptionsList
