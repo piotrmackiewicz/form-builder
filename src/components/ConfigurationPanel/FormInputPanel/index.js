@@ -29,6 +29,8 @@ const FormInputPanel = ({ mode }) => {
   const dispatch = useDispatch()
   const [selectedInputType, setSelectedInputType] = useState('singleLineText')
   const [placeholder, setPlaceholder] = useState('')
+  const [buttonText, setButtonText] = useState('')
+  const [noButtonTextError, setNoButtonTextError] = useState(false)
   const [options, setOptions] = useState([])
   const [addOptionModalVisible, setAddOptionModalVisible] = useState(false)
   const [noOptionsError, setNoOptionsError] = useState(false)
@@ -36,8 +38,15 @@ const FormInputPanel = ({ mode }) => {
   useEffect(() => {
     if (editedField && mode === EDIT_FORM_INPUT) {
       setSelectedInputType(editedField.type)
-      setPlaceholder(editedField.placeholder)
-      if (editedField.options) setOptions(editedField.options)
+      if (
+        ['singleLineText', 'multiLineText', 'select'].includes(editedField.type)
+      ) {
+        setPlaceholder(editedField.placeholder)
+        if (editedField.options) setOptions(editedField.options)
+      }
+      if (editedField.type === 'button') {
+        setButtonText(editedField.text)
+      }
     } else {
       setSelectedInputType('singleLineText')
       setPlaceholder('')
@@ -50,16 +59,35 @@ const FormInputPanel = ({ mode }) => {
     setOptions([])
     setSelectedInputType('singleLineText')
     setNoOptionsError(false)
+    setNoButtonTextError(false)
     dispatch(setConfigurationPanelGroupId(null))
     dispatch(setConfigurationPanelMode(null))
   }
 
-  const handleChange = (e) => setPlaceholder(e.target.value)
+  const handleChange = (e) => {
+    switch (e.target.name) {
+      case 'placeholder':
+        setPlaceholder(e.target.value)
+        break
+      case 'buttonText':
+        if (e.target.value.trim()) {
+          setNoButtonTextError(false)
+        }
+        setButtonText(e.target.value)
+        break
+      default:
+        break
+    }
+  }
 
   const handleSubmit = () => {
-    let input = {
+    const input = {
       type: selectedInputType,
-      placeholder,
+    }
+    if (
+      ['singleLineText', 'multiLineText', 'select'].includes(selectedInputType)
+    ) {
+      input.placeholder = placeholder
     }
     if (selectedInputType === 'select') {
       if (options.length === 0) {
@@ -67,6 +95,13 @@ const FormInputPanel = ({ mode }) => {
         return
       }
       input.options = options
+    }
+    if (selectedInputType === 'button') {
+      if (!buttonText.trim()) {
+        setNoButtonTextError(true)
+        return
+      }
+      input.text = buttonText
     }
     if (mode === FORM_INPUT) {
       input.id = uuidv4()
@@ -160,7 +195,24 @@ const FormInputPanel = ({ mode }) => {
       name="placeholder"
       value={placeholder}
       onChange={handleChange}
-    ></Form.Input>
+    />
+  )
+
+  const renderButtonProperties = () => (
+    <React.Fragment>
+      <Form.Input
+        placeholder="Button text"
+        name="buttonText"
+        value={buttonText}
+        onChange={handleChange}
+        error={
+          noButtonTextError && {
+            content: 'Please enter button text',
+            pointing: 'below',
+          }
+        }
+      />
+    </React.Fragment>
   )
 
   const renderForm = () => (
@@ -170,6 +222,7 @@ const FormInputPanel = ({ mode }) => {
           {['select', 'singleLineText', 'multiLineText'].includes(
             selectedInputType
           ) && renderPlaceholderInput()}
+          {selectedInputType === 'button' && renderButtonProperties()}
           {selectedInputType === 'select' && renderSelectOptions()}
           <Form.Button primary content={renderFormButtonText()} />
         </Form>

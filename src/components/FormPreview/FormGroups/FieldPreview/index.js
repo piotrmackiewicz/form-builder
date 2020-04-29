@@ -31,6 +31,9 @@ const FieldPreview = ({
         />
       )
       break
+    case 'button':
+      triggerComponent = <Form.Button primary content={field.text} />
+      break
     default:
       break
   }
