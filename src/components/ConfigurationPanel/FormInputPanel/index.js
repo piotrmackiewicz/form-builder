@@ -14,6 +14,7 @@ import {
 import AddOptionModal from './AddOptionModal/index'
 import OptionsList from './OptionsList/index'
 import { v4 as uuidv4 } from 'uuid'
+import styled from 'styled-components'
 
 const FormInputPanel = ({ mode }) => {
   const groupId = useSelector((s) => s.configurationPanelGroupId)
@@ -111,6 +112,11 @@ const FormInputPanel = ({ mode }) => {
       dispatch(editInputField(editedField.id, input, groupId))
     }
     setDefaults()
+  }
+
+  const handleCancel = () => {
+    setDefaults()
+    dispatch(setConfigurationPanelMode(null))
   }
 
   const inputTypeOptions = [
@@ -215,16 +221,27 @@ const FormInputPanel = ({ mode }) => {
     </React.Fragment>
   )
 
+  const ButtonsWrapper = styled.div`
+    display: flex;
+  `
+
   const renderForm = () => (
     <Grid.Row>
       <Grid.Column>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           {['select', 'singleLineText', 'multiLineText'].includes(
             selectedInputType
           ) && renderPlaceholderInput()}
           {selectedInputType === 'button' && renderButtonProperties()}
           {selectedInputType === 'select' && renderSelectOptions()}
-          <Form.Button primary content={renderFormButtonText()} />
+          <ButtonsWrapper>
+            <Button primary onClick={handleSubmit}>
+              {renderFormButtonText()}
+            </Button>
+            <Button color="red" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </ButtonsWrapper>
         </Form>
       </Grid.Column>
     </Grid.Row>
