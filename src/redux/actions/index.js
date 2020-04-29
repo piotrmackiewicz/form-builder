@@ -8,6 +8,8 @@ import {
   CHANGE_GROUP_ORDER,
   REMOVE_INPUT_FIELD,
   CHANGE_FIELD_ORDER,
+  SET_EDITED_FIELD_ID,
+  EDIT_FIELD,
 } from 'redux/constants/action-types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -64,5 +66,17 @@ export const changeFieldOrder = (idx, direction, groupId) => ({
   type: CHANGE_FIELD_ORDER,
   idx,
   direction,
+  groupId,
+})
+
+export const setEditedFieldId = (id) => ({
+  type: SET_EDITED_FIELD_ID,
+  id,
+})
+
+export const editInputField = (fieldId, input, groupId) => ({
+  type: EDIT_FIELD,
+  fieldId,
+  input,
   groupId,
 })

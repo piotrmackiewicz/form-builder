@@ -10,9 +10,12 @@ import {
   changeGroupOrder,
   removeInputField,
   changeFieldOrder,
+  setEditedFieldId,
 } from 'redux/actions/index'
-import { FORM_INPUT } from 'redux/constants/configuration-panel-modes'
-import FieldPopup from './FieldPopup/index'
+import {
+  FORM_INPUT,
+  EDIT_FORM_INPUT,
+} from 'redux/constants/configuration-panel-modes'
 import FieldPreview from './FieldPreview/index'
 
 const InputGroupLabelField = styled(Form.Field)`
@@ -28,11 +31,6 @@ const NoInputGroupsMessage = styled(Message)`
   margin-left: 0.5em !important;
 `
 
-const FieldWrapper = styled.div`
-  position: relative;
-  padding: 0 0.5em;
-`
-
 const FormGroups = ({ groups }) => {
   const dispatch = useDispatch()
 
@@ -46,6 +44,12 @@ const FormGroups = ({ groups }) => {
     dispatch(changeFieldOrder(idx, direction, groupId))
   }
 
+  const handleEditField = (fieldId, groupId) => {
+    dispatch(setEditedFieldId(fieldId))
+    dispatch(setConfigurationPanelGroupId(groupId))
+    dispatch(setConfigurationPanelMode(EDIT_FORM_INPUT))
+  }
+
   const renderFields = (fields, groupId) => {
     if (fields.length === 0) {
       return (
@@ -56,11 +60,13 @@ const FormGroups = ({ groups }) => {
     }
     return fields.map((f, idx) => (
       <FieldPreview
+        key={f.id}
         field={f}
         onRemoveField={() => handleFieldRemove(groupId, f.id)}
         onChangeFieldOrder={(direction) =>
           handleChangeFieldOrder(idx, direction, groupId, fields)
         }
+        onEditField={() => handleEditField(f.id, groupId)}
       />
     ))
   }

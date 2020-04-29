@@ -1,23 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Header, Grid, Form, Button, Message } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   setConfigurationPanelMode,
   addInputField,
   setConfigurationPanelGroupId,
+  editInputField,
 } from 'redux/actions/index'
+import {
+  FORM_INPUT,
+  EDIT_FORM_INPUT,
+} from 'redux/constants/configuration-panel-modes'
 import AddOptionModal from './AddOptionModal/index'
 import OptionsList from './OptionsList/index'
 import { v4 as uuidv4 } from 'uuid'
 
 const FormInputPanel = () => {
   const groupId = useSelector((s) => s.configurationPanelGroupId)
+  const configurationPanelMode = useSelector((s) => s.configurationPanelMode)
+  const editedField = useSelector((s) => {
+    if (!s.editedFieldId) return null
+    const foundGroup = s.formGroups.find((fg) => fg.id === groupId)
+    if (foundGroup) {
+      return foundGroup.fields.find((f) => f.id === s.editedFieldId)
+    } else {
+      return null
+    }
+  })
   const dispatch = useDispatch()
   const [selectedInputType, setSelectedInputType] = useState('singleLineText')
   const [placeholder, setPlaceholder] = useState('')
   const [options, setOptions] = useState([])
   const [addOptionModalVisible, setAddOptionModalVisible] = useState(false)
   const [noOptionsError, setNoOptionsError] = useState(false)
+
+  useEffect(() => {
+    if (editedField && configurationPanelMode === EDIT_FORM_INPUT) {
+      setSelectedInputType(editedField.type)
+      setPlaceholder(editedField.placeholder)
+      if (editedField.options) setOptions(editedField.options)
+    } else {
+      setSelectedInputType('singleLineText')
+      setPlaceholder('')
+      setOptions([])
+    }
+  }, [editedField, configurationPanelMode])
 
   const setDefaults = () => {
     setPlaceholder('')
@@ -32,7 +59,6 @@ const FormInputPanel = () => {
 
   const handleSubmit = () => {
     let input = {
-      id: uuidv4(),
       type: selectedInputType,
       placeholder,
     }
@@ -43,7 +69,13 @@ const FormInputPanel = () => {
       }
       input.options = options
     }
-    dispatch(addInputField(groupId, input))
+    if (configurationPanelMode === FORM_INPUT) {
+      input.id = uuidv4()
+      dispatch(addInputField(groupId, input))
+    }
+    if (configurationPanelMode === EDIT_FORM_INPUT) {
+      dispatch(editInputField(editedField.id, input, groupId))
+    }
     setDefaults()
   }
 
@@ -109,6 +141,15 @@ const FormInputPanel = () => {
     )
   }
 
+  const renderFormButtonText = () => {
+    if (configurationPanelMode === FORM_INPUT) {
+      return 'Create'
+    }
+    if (configurationPanelMode === EDIT_FORM_INPUT) {
+      return 'Save'
+    }
+  }
+
   const renderForm = () => (
     <Grid.Row>
       <Grid.Column>
@@ -120,7 +161,7 @@ const FormInputPanel = () => {
             onChange={handleChange}
           ></Form.Input>
           {selectedInputType === 'select' && renderSelectOptions()}
-          <Form.Button primary content="Create" />
+          <Form.Button primary content={renderFormButtonText()} />
         </Form>
       </Grid.Column>
     </Grid.Row>
@@ -136,6 +177,15 @@ const FormInputPanel = () => {
     setNoOptionsError(false)
   }
 
+  const renderHeaderText = () => {
+    if (configurationPanelMode === FORM_INPUT) {
+      return `New input to group ${groupId}`
+    }
+    if (configurationPanelMode === EDIT_FORM_INPUT) {
+      return `Edit field in group ${groupId}`
+    }
+  }
+
   return (
     <React.Fragment>
       <AddOptionModal
@@ -145,7 +195,7 @@ const FormInputPanel = () => {
       />
       <Grid.Row>
         <Grid.Column>
-          <Header as="h2">New input to group {groupId}</Header>
+          <Header as="h2">{renderHeaderText()}</Header>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>

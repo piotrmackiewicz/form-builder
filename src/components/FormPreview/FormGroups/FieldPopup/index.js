@@ -17,6 +17,7 @@ const FieldPopup = ({
   triggerComponent,
   onLeftClick,
   onRightClick,
+  onEditClick,
   onRemoveClick,
 }) => {
   const [open, setOpen] = useState(false)
@@ -49,6 +50,9 @@ const FieldPopup = ({
           }}
         >
           <PopupButtonIcon name="arrow right" />
+        </FieldPopupButton>
+        <FieldPopupButton color="orange" onClick={onEditClick}>
+          <PopupButtonIcon name="edit" />
         </FieldPopupButton>
         <FieldPopupButton
           color="red"

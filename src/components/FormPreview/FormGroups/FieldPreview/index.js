@@ -8,7 +8,12 @@ const FieldWrapper = styled.div`
   padding: 0 0.5em;
 `
 
-const FieldPreview = ({ field, onRemoveField, onChangeFieldOrder }) => {
+const FieldPreview = ({
+  field,
+  onRemoveField,
+  onChangeFieldOrder,
+  onEditField,
+}) => {
   let triggerComponent = null
   switch (field.type) {
     case 'singleLineText':
@@ -36,6 +41,7 @@ const FieldPreview = ({ field, onRemoveField, onChangeFieldOrder }) => {
       triggerComponent={<FieldWrapper>{triggerComponent}</FieldWrapper>}
       onLeftClick={() => onChangeFieldOrder('left')}
       onRightClick={() => onChangeFieldOrder('right')}
+      onEditClick={onEditField}
       onRemoveClick={onRemoveField}
     />
   )

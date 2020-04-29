@@ -9,6 +9,8 @@ import {
   CHANGE_GROUP_ORDER,
   REMOVE_INPUT_FIELD,
   CHANGE_FIELD_ORDER,
+  SET_EDITED_FIELD_ID,
+  EDIT_FIELD,
 } from 'redux/constants/action-types'
 
 function rootReducer(state = initialState, action) {
@@ -90,6 +92,34 @@ function rootReducer(state = initialState, action) {
             return {
               ...fg,
               fields: fieldsCopy,
+            }
+          } else {
+            return fg
+          }
+        }),
+      }
+    case SET_EDITED_FIELD_ID:
+      return {
+        ...state,
+        editedFieldId: action.id,
+      }
+    case EDIT_FIELD:
+      return {
+        ...state,
+        formGroups: state.formGroups.map((fg) => {
+          if (fg.id === action.groupId) {
+            return {
+              ...fg,
+              fields: fg.fields.map((f) => {
+                if (f.id === action.fieldId) {
+                  return {
+                    ...f,
+                    ...action.input,
+                  }
+                } else {
+                  return f
+                }
+              }),
             }
           } else {
             return fg
