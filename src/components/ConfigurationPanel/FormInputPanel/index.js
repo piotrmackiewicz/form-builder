@@ -15,9 +15,8 @@ import AddOptionModal from './AddOptionModal/index'
 import OptionsList from './OptionsList/index'
 import { v4 as uuidv4 } from 'uuid'
 
-const FormInputPanel = () => {
+const FormInputPanel = ({ mode }) => {
   const groupId = useSelector((s) => s.configurationPanelGroupId)
-  const configurationPanelMode = useSelector((s) => s.configurationPanelMode)
   const editedField = useSelector((s) => {
     if (!s.editedFieldId) return null
     const foundGroup = s.formGroups.find((fg) => fg.id === groupId)
@@ -35,7 +34,7 @@ const FormInputPanel = () => {
   const [noOptionsError, setNoOptionsError] = useState(false)
 
   useEffect(() => {
-    if (editedField && configurationPanelMode === EDIT_FORM_INPUT) {
+    if (editedField && mode === EDIT_FORM_INPUT) {
       setSelectedInputType(editedField.type)
       setPlaceholder(editedField.placeholder)
       if (editedField.options) setOptions(editedField.options)
@@ -44,7 +43,7 @@ const FormInputPanel = () => {
       setPlaceholder('')
       setOptions([])
     }
-  }, [editedField, configurationPanelMode])
+  }, [editedField, mode])
 
   const setDefaults = () => {
     setPlaceholder('')
@@ -69,11 +68,11 @@ const FormInputPanel = () => {
       }
       input.options = options
     }
-    if (configurationPanelMode === FORM_INPUT) {
+    if (mode === FORM_INPUT) {
       input.id = uuidv4()
       dispatch(addInputField(groupId, input))
     }
-    if (configurationPanelMode === EDIT_FORM_INPUT) {
+    if (mode === EDIT_FORM_INPUT) {
       dispatch(editInputField(editedField.id, input, groupId))
     }
     setDefaults()
@@ -94,6 +93,11 @@ const FormInputPanel = () => {
       key: 's',
       text: 'Select',
       value: 'select',
+    },
+    {
+      key: 'b',
+      text: 'Button',
+      value: 'button',
     },
   ]
 
@@ -142,24 +146,30 @@ const FormInputPanel = () => {
   }
 
   const renderFormButtonText = () => {
-    if (configurationPanelMode === FORM_INPUT) {
+    if (mode === FORM_INPUT) {
       return 'Create'
     }
-    if (configurationPanelMode === EDIT_FORM_INPUT) {
+    if (mode === EDIT_FORM_INPUT) {
       return 'Save'
     }
   }
+
+  const renderPlaceholderInput = () => (
+    <Form.Input
+      placeholder="Placeholder"
+      name="placeholder"
+      value={placeholder}
+      onChange={handleChange}
+    ></Form.Input>
+  )
 
   const renderForm = () => (
     <Grid.Row>
       <Grid.Column>
         <Form onSubmit={handleSubmit}>
-          <Form.Input
-            placeholder="Placeholder"
-            name="placeholder"
-            value={placeholder}
-            onChange={handleChange}
-          ></Form.Input>
+          {['select', 'singleLineText', 'multiLineText'].includes(
+            selectedInputType
+          ) && renderPlaceholderInput()}
           {selectedInputType === 'select' && renderSelectOptions()}
           <Form.Button primary content={renderFormButtonText()} />
         </Form>
@@ -178,10 +188,10 @@ const FormInputPanel = () => {
   }
 
   const renderHeaderText = () => {
-    if (configurationPanelMode === FORM_INPUT) {
+    if (mode === FORM_INPUT) {
       return `New input to group ${groupId}`
     }
-    if (configurationPanelMode === EDIT_FORM_INPUT) {
+    if (mode === EDIT_FORM_INPUT) {
       return `Edit field in group ${groupId}`
     }
   }

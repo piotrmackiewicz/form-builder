@@ -12,9 +12,9 @@ const ConfigurationPanel = ({ mode }) => {
     case FORM_INPUT_GROUP:
       return <FormInputGroupPanel />
     case FORM_INPUT:
-      return <FormInputPanel />
+      return <FormInputPanel mode={mode} />
     case EDIT_FORM_INPUT:
-      return <FormInputPanel />
+      return <FormInputPanel mode={mode} />
     default:
       return null
   }
